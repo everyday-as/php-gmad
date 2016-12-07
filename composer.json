@@ -1,0 +1,26 @@
+{
+    "name": "discordstudios/php-gmad",
+    "authors": [
+        {
+            "name": "Matt Stevens",
+            "email": "matt@discordstudios.co"
+        }
+    ],
+    "description": "package / unpackage garry's mod gma files",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/HandsomeMatt/php-binary-reader"
+        }
+    ],  
+    "require": {
+        "php" : "~7.0",
+        "mdurrant/php-binary-reader": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "DiscordStudios\\GMAD\\": "src"
+        }
+    }
+}
