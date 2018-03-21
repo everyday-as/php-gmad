@@ -1,16 +1,16 @@
 {
     "name": "gmodstore/php-gmad",
+    "description": "package / unpackage garry's mod gma files",
+    "license": "MIT",    
     "authors": [
         {
             "name": "Matt Stevens",
-            "email": "matt@discordstudios.co"
+            "email": "matt@handsomematt.co.uk"
         }
     ],
-    "description": "package / unpackage garry's mod gma files",
-    "license": "MIT",
     "require": {
-        "php" : "~7.0",
-        "mdurrant/php-binary-reader": "dev-master"
+        "php" : ">=7.1",
+        "mdurrant/php-binary-reader": "~1.0"
     },
     "autoload": {
         "psr-4": {
