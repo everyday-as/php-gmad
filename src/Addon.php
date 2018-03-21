@@ -21,10 +21,12 @@ class Addon
 
     /**
      * @param integer $steam_id
+     * @return Addon
      */
-    public function setSteamId(int $steam_id)
+    public function setSteamId(int $steam_id): Addon
     {
         $this->steam_id = $steam_id;
+        return $this;
     }
 
     /**
@@ -37,10 +39,12 @@ class Addon
 
     /**
      * @param integer $timestamp
+     * @return Addon
      */
-    public function setTimestamp(int $timestamp)
+    public function setTimestamp(int $timestamp): Addon
     {
         $this->timestamp = $timestamp;
+        return $this;
     }
 
     /**
@@ -53,10 +57,12 @@ class Addon
 
     /**
      * @param string $name
+     * @return Addon
      */
-    public function setName(string $name)
+    public function setName(string $name): Addon
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -69,10 +75,12 @@ class Addon
 
     /**
      * @param string $description
+     * @return Addon
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): Addon
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -85,10 +93,12 @@ class Addon
 
     /**
      * @param string $author
+     * @return Addon
      */
-    public function setAuthor(string $author)
+    public function setAuthor(string $author): Addon
     {
         $this->author = $author;
+        return $this;
     }
 
     /**
@@ -100,11 +110,13 @@ class Addon
     }
 
     /**
-     * @param integer $version
+     * @param int $version
+     * @return Addon
      */
-    public function setVersion(int $version)
+    public function setVersion(int $version): Addon
     {
         $this->version = $version;
+        return $this;
     }
 
     /**
@@ -117,10 +129,12 @@ class Addon
 
     /**
      * @param array $file_index
+     * @return Addon
      */
-    public function setFileIndex($file_index)
+    public function setFileIndex($file_index): Addon
     {
         $this->file_index = $file_index;
+        return $this;
     }
 
     /**
@@ -133,9 +147,19 @@ class Addon
 
     /**
      * @param integer $file_block_position
+     * @return Addon
      */
-    public function setFileBlockPosition($file_block_position)
+    public function setFileBlockPosition($file_block_position): Addon
     {
         $this->file_block_position = $file_block_position;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'Addon ' . $this->getName() . ' by ' . $this->getAuthor();
     }
 }
