@@ -1,5 +1,9 @@
 <?php namespace GmodStore\GMad;
 
+/**
+ * Addon represents a GMod addon file archive.
+ * @package GmodStore\GMad
+ */
 class Addon
 {
     private $timestamp;
@@ -12,6 +16,8 @@ class Addon
     private $file_block_position;
 
     /**
+     * Gets the 64-bit SteamID of the owner of the addon.
+     *
      * @return integer
      */
     public function getSteamId(): ?int
@@ -20,6 +26,8 @@ class Addon
     }
 
     /**
+     * Sets the 64-bit SteamID of the owner of the addon.
+     *
      * @param integer $steam_id
      * @return Addon
      */
@@ -30,6 +38,8 @@ class Addon
     }
 
     /**
+     * Gets the creation timestamp of the addon.
+     *
      * @return integer
      */
     public function getTimestamp(): ?int
@@ -38,6 +48,8 @@ class Addon
     }
 
     /**
+     * Sets the creation timestamp of the addon.
+     *
      * @param integer $timestamp
      * @return Addon
      */
@@ -48,6 +60,8 @@ class Addon
     }
 
     /**
+     * Gets the name of the addon.
+     *
      * @return string
      */
     public function getName(): ?string
@@ -56,6 +70,8 @@ class Addon
     }
 
     /**
+     * Sets the name of the addon.
+     *
      * @param string $name
      * @return Addon
      */
@@ -66,6 +82,8 @@ class Addon
     }
 
     /**
+     * Gets the description of the addon.
+     *
      * @return string
      */
     public function getDescription(): ?string
@@ -74,6 +92,8 @@ class Addon
     }
 
     /**
+     * Sets the description of the addon.
+     *
      * @param string $description
      * @return Addon
      */
@@ -84,6 +104,8 @@ class Addon
     }
 
     /**
+     * Gets the author's signed name of the addon.
+     *
      * @return string
      */
     public function getAuthor(): ?string
@@ -92,6 +114,8 @@ class Addon
     }
 
     /**
+     * Sets the author's signed name of the addon.
+     *
      * @param string $author
      * @return Addon
      */
@@ -102,6 +126,8 @@ class Addon
     }
 
     /**
+     * Gets the addon version integer.
+     *
      * @return integer
      */
     public function getVersion(): ?int
@@ -110,6 +136,8 @@ class Addon
     }
 
     /**
+     * Sets the addon version integer.
+     *
      * @param int $version
      * @return Addon
      */
@@ -120,14 +148,19 @@ class Addon
     }
 
     /**
+     * Gets the file index, an array of IndexEntries that represent path, size, etc..
+     *
      * @return array
      */
-    public function getFileIndex()
+    public function getFileIndex(): array
     {
         return $this->file_index;
     }
 
     /**
+     * Sets the file index, an array of IndexEntries that represent path, size, etc..
+     *
+     * @internal Used by the AddonReader
      * @param array $file_index
      * @return Addon
      */
@@ -138,6 +171,8 @@ class Addon
     }
 
     /**
+     * Gets the file block position, this is where the file data starts in the archive
+     *
      * @return integer
      */
     public function getFileBlockPosition()
@@ -146,6 +181,9 @@ class Addon
     }
 
     /**
+     * Sets the file block position, where the file data starts in the archive.
+     *
+     * @internal Used by the AddonReader
      * @param integer $file_block_position
      * @return Addon
      */

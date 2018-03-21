@@ -1,7 +1,12 @@
 <?php namespace GmodStore\GMad;
 
+use GmodStore\GMad\Exceptions\InvalidFileException;
 use PhpBinaryReader\BinaryReader;
 
+/**
+ * Class AddonReader
+ * @package GmodStore\GMad
+ */
 class AddonReader
 {
     private $buffer;
@@ -15,24 +20,26 @@ class AddonReader
 
     public function parse()
     {
-        if ($this->buffer === null)
-            throw new \Exception("No buffer");
+        if ($this->buffer === null) {
+            throw new \RuntimeException("No buffer");
+        }
 
         $reader = new BinaryReader($this->buffer);
 
-        if ($reader->readString(4) !== "GMAD")
-            throw new \Exception("Header mismatch");
+        if ($reader->readString(4) !== "GMAD") {
+            throw new InvalidFileException("Header mismatch");
+        }
 
         $file_format_version = $reader->readInt8();
         $this->addon->setSteamId($reader->readUInt64());
         $this->addon->setTimestamp($reader->readUInt64());
 
-        if ($file_format_version > 1)
-        {
+        if ($file_format_version > 1) {
             $content = $this->readNullString($reader);
 
-            while($content !== '')
+            while ($content !== '') {
                 $content = $this->readNullString($reader);
+            }
         }
 
         $this->addon->setName($this->readNullString($reader));
@@ -44,8 +51,7 @@ class AddonReader
         $offset = 0;
         $file_number = 1;
 
-        while($reader->readUInt32() != 0)
-        {
+        while ($reader->readUInt32() != 0) {
             $index_entry = new IndexEntry();
 
             $index_entry->setPath($this->readNullString($reader));
@@ -73,9 +79,9 @@ class AddonReader
     }
 
     /**
-     * @return \HandsomeMatt\GMad\Addon
+     * @return Addon|null
      */
-    public function getAddon(): ?\HandsomeMatt\GMad\Addon
+    public function getAddon(): ?Addon
     {
         return $this->addon;
     }
@@ -84,15 +90,16 @@ class AddonReader
     {
         $str = '';
 
-        while(true)
-        {
-            if(!$reader->canReadBytes(1))
+        while (true) {
+            if (!$reader->canReadBytes(1)) {
                 break;
+            }
 
             $char = $reader->readInt8();
 
-            if($char == "\0")
+            if ($char == "\0") {
                 break;
+            }
 
             $str = $str . chr($char);
         }

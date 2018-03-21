@@ -1,5 +1,9 @@
 <?php namespace GmodStore\GMad;
 
+/**
+ * Class IndexEntry
+ * @package GmodStore\GMad
+ */
 class IndexEntry
 {
     private $path;
