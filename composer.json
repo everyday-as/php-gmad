@@ -1,5 +1,5 @@
 {
-    "name": "handsomematt/php-gmad",
+    "name": "gmodstore/php-gmad",
     "authors": [
         {
             "name": "Matt Stevens",
@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "HandsomeMatt\\GMad\\": "src"
+            "GmodStore\\GMad\\": "src"
         }
     }
 }

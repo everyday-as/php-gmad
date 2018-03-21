@@ -1,4 +1,4 @@
-<?php namespace HandsomeMatt\GMad;
+<?php namespace GmodStore\GMad;
 
 use PhpBinaryReader\BinaryReader;
 

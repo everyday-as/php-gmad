@@ -1,4 +1,4 @@
-<?php namespace HandsomeMatt\GMad;
+<?php namespace GmodStore\GMad;
 
 class Addon
 {
