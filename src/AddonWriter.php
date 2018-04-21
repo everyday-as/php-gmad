@@ -18,6 +18,8 @@ class AddonWriter
      */
     protected $addon_meta;
 
+    protected $files;
+
     public function __construct($handle)
     {
         $this->handle = $handle;
@@ -44,10 +46,10 @@ class AddonWriter
         $format_version = pack('C', self::FILE_FORMAT_VERSION);
         $steam_id = pack('Q', $this->addon_meta->getSteamID());
         $timestamp = pack('Q', $this->addon_meta->getTimestamp());
-        $required_content = pack('C', 0);
-        $name = pack('Z', $this->addon_meta->getName());
-        $description = pack('Z', $this->addon_meta->getDescription());
-        $author = pack('Z', $this->addon_meta->getAuthor());
+        $required_content = "\0";
+        $name = $this->addon_meta->getName() . "\0";
+        $description = $this->addon_meta->getDescription() . "\0";
+        $author = $this->addon_meta->getAuthor() . "\0";
         $version = pack('L', $this->addon_meta->getVersion());
 
         // write it to the handle
@@ -64,26 +66,25 @@ class AddonWriter
 
     private function writeFileMetaData()
     {
-        $files = [];
-        $nFiles = count($files);
+        $file_number = 1;
 
-        for ($i = 0; $i < $nFiles; $i++) {
-            $file = $files[$i];
+        foreach($this->files as $path => $file)
+        {
+            $file_length = strlen($file);
+            $crc32 = hash('crc32', $file, true);
 
-            $path = pack('Z', $file->path);
-            $size = pack('Q', $file->size);
-            $crc = pack('L', $file->crc);
+            $pnum = pack('L', $file_number);
+            $ppath = strtolower($path) . "\0";
+            $psize = pack('Q', $file_length);
+            $pcrc32 = pack('L', $crc32);
 
-            // iFileNum (starts at 1)
+            fwrite($this->handle, $pnum, 4);
+            fwrite($this->handle, $ppath);
+            fwrite($this->handle, $psize, 8);
+            fwrite($this->handle, $pcrc32, 4);
 
-            /*unsigned int	iCRC = File::CRC( strFolder + *f );
-			long long		iSize = File::Size( strFolder + *f );
-			iFileNum++;
-			buffer.WriteType( ( unsigned int ) iFileNum );					// File number (4)
-			buffer.WriteString( String::GetLower( *f ) );					// File name (all lower case!) (n)
-			buffer.WriteType( ( long long ) iSize );						// File size (8)
-			buffer.WriteType( ( unsigned int ) iCRC );						// File CRC (4)*/
-
+            unset($file); // memory management
+            $file_number++;
         }
     }
 
@@ -101,8 +102,15 @@ class AddonWriter
 
     private function writeChecksum()
     {
-        // unsigned int AddonCRC = Hasher::CRC32::Easy( buffer.GetBase(), buffer.GetWritten() );
-        // buffer.WriteType( AddonCRC );
+        $eof = ftell($this->handle);
+        fseek($this->handle, 0, SEEK_SET);
+
+        $contents = fread($this->handle, $eof);
+        $crc32 = hash('crc32', $contents, true);
+
+        fwrite($this->handle, $crc32, 4);
+
+        unset($contents); // memory management
     }
 
     /**
@@ -141,5 +149,19 @@ class AddonWriter
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
 
+    /**
+     * @param mixed $files
+     */
+    public function setFiles($files): void
+    {
+        $this->files = $files;
+    }
 }
