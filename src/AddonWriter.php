@@ -90,12 +90,8 @@ class AddonWriter
 
     private function writeFiles()
     {
-        $files = [];
-        $nFiles = count($files);
-
-        for ($i = 0; $i < $nFiles; $i++) {
-            $file = $files[$i];
-
+        foreach($this->files as $path => $file)
+        {
             fwrite($this->handle, $file);
         }
     }
