@@ -71,7 +71,7 @@ class AddonWriter
         foreach($this->files as $path => $file)
         {
             $file_length = strlen($file);
-            $crc32 = hash('crc32', $file, true);
+            $crc32 = crc32($file);
 
             $pnum = pack('L', $file_number);
             $ppath = strtolower($path) . "\0";
@@ -86,6 +86,9 @@ class AddonWriter
             unset($file); // memory management
             $file_number++;
         }
+
+        // Zero to signify end of files
+        fwrite($this->handle, "\0\0\0\0", 4);
     }
 
     private function writeFiles()
@@ -102,9 +105,10 @@ class AddonWriter
         fseek($this->handle, 0, SEEK_SET);
 
         $contents = fread($this->handle, $eof);
-        $crc32 = hash('crc32', $contents, true);
+        $crc32 = crc32($contents);
+        $pcrc32 = pack('L', $crc32);
 
-        fwrite($this->handle, $crc32, 4);
+        fwrite($this->handle, $pcrc32, 4);
 
         unset($contents); // memory management
     }
