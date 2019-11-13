@@ -104,13 +104,14 @@ class AddonWriter
         $eof = ftell($this->handle);
         fseek($this->handle, 0, SEEK_SET);
 
-        $contents = fread($this->handle, $eof);
-        $crc32 = crc32($contents);
+        $crc = hash_init('crc32b');
+        hash_update_stream($crc, $this->handle, $eof);
+        $crc32 = hexdec(hash_final($crc));
         $pcrc32 = pack('L', $crc32);
 
         fwrite($this->handle, $pcrc32, 4);
 
-        unset($contents); // memory management
+        unset($crc, $crc32); // memory management
     }
 
     /**
